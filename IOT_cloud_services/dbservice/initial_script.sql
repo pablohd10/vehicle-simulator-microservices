@@ -19,16 +19,16 @@ CREATE TABLE available_plates (
  	PRIMARY KEY (id)
  );
 
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0001BBB',0);
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0002BBB',0);
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0003BBB',0);
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0004BBB',0);
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0005BBB',0);
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0006BBB',0);
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0007BBB',0);
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0008BBB',0);
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0009BBB',0);
-INSERT INTO available_plates ('plate', 'is_assigned') VALUES ('0010BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0001BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0002BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0003BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0004BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0005BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0006BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0007BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0008BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0009BBB',0);
+INSERT INTO available_plates (plate, is_assigned) VALUES ('0010BBB',0);
 
 # query over vehicles table
 SELECT plate, is_assigned FROM available_plates ORDER BY plate DESC;
