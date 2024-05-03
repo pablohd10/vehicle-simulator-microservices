@@ -7,8 +7,8 @@ services:
   volumes:
    - "./mosquitto/code/mosquitto.conf:/etc/mosquitto/mosquitto.conf"
 
- dbService:
-  build: ./dbService
+ dbservice:
+  build: ./dbservice
   environment:
    - MYSQL_ROOT_PASSWORD=3u&Um%k{Jr
   ports:
@@ -24,6 +24,6 @@ services:
    - "./message_router/code:/etc/usr/src/app"
   depends_on:
    - mosquitto
-   - dbService
+   - dbservice
 
 
