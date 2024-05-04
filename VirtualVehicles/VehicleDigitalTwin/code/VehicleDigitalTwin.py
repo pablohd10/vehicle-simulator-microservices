@@ -20,10 +20,10 @@ current_speed=0
 current_ldr = 0
 current_position = {"latitude": 0, "longitude": 0}
 # Estado actual de las luces LED del vehículo
-current_leds_str = ['LUZ DELANTERA INQUIERDA {"Color": "White", "Intensity": 0.0, "Blinking": "False"}',
-                    'LUZ DELANTERA DERECHA {"Color": "White", "Intensity": 0.0, "Blinking": "False"}',
-                    'LUZ TRASERA IZQUIERDA {"Color": "Red",   "Intensity": 0.0, "Blinking": "False"}',
-                    'LUZ TRASERA DERECHA {"Color": "Red",   "Intensity": 0.0, "Blinking": "False"}']
+current_leds_str = ['{"Color": "White", "Intensity": "0.0", "Blinking": "0"}',
+                    '{"Color": "White", "Intensity": "0.0", "Blinking": "0"}',
+                    '{"Color": "Red", "Intensity": "0.0", "Blinking": "0"}',
+                    '{"Color": "Red", "Intensity": "0.0", "Blinking": "0"}']
 parado=False
 cambio = False
 event_message = ""
@@ -254,27 +254,27 @@ def led_controller():
     while comando_actual:
         # Intermitencia
         if current_steering > 100:
-            current_leds_str[0] = 'LUZ DELANTERA IZQUIERDA {"Color": "Yellow", "Intensity": 1.0, "Blinking": "True"}'
-            current_leds_str[2] = 'LUZ TRASERA IZQUIERDA {"Color": "Red", "Intensity": 1.0, "Blinking": "True"}'
+            current_leds_str[0] = '{"Color": "Yellow", "Intensity": "1.0," "Blinking": "1"}'
+            current_leds_str[2] = '{"Color": "Red", "Intensity": "1.0", "Blinking": "1"}'
         elif current_steering < 80:
-            current_leds_str[1] = 'LUZ DELANTERA DERECHA {"Color": "Yellow", "Intensity": 1.0, "Blinking": "True"}'
-            current_leds_str[3] = 'LUZ TRASERA DERECHA {"Color": "Red", "Intensity": 1.0, "Blinking": "True"}'
+            current_leds_str[1] = '{"Color": "Yellow", "Intensity": "1.0", "Blinking": "1"}'
+            current_leds_str[3] = '{"Color": "Red", "Intensity": "1.0", "Blinking": "1"}'
         # Luces de freno
         elif parado:
-            current_leds_str[2] = 'LUZ TRASERA IZQUIERDA {"Color": "Red", "Intensity": 1.0, "Blinking": "False"}'
-            current_leds_str[3] = 'LUZ TRASERA DERECHA {"Color": "Red", "Intensity": 1.0, "Blinking": "False"}'
+            current_leds_str[2] = '{"Color": "Red", "Intensity": "1.0", "Blinking": "0"}'
+            current_leds_str[3] = '{"Color": "Red", "Intensity": "1.0", "Blinking": "0"}'
         # Luces de posición
         elif current_ldr > 3000:
-            current_leds_str[0] = 'LUZ DELANTERA IZQUIERDA {"Color": "White", "Intensity": 1.0, "Blinking": "False"}'
-            current_leds_str[1] = 'LUZ DELANTERA DERECHA {"Color": "White", "Intensity": 1.0, "Blinking": "False"}'
-            current_leds_str[2] = 'LUZ TRASERA IZQUIERDA {"Color": "Red", "Intensity": 0.5, "Blinking": "False"}'
-            current_leds_str[3] = 'LUZ TRASERA DERECHA {"Color": "Red", "Intensity": 0.5, "Blinking": "False"}'
+            current_leds_str[0] = '{"Color": "White", "Intensity": "1.0", "Blinking": "0"}'
+            current_leds_str[1] = '{"Color": "White", "Intensity": "1.0", "Blinking": "0"}'
+            current_leds_str[2] = '{"Color": "Red", "Intensity": "0.5", "Blinking": "0"}'
+            current_leds_str[3] = '{"Color": "Red", "Intensity": "0.5", "Blinking": "0"}'
         # Luces apagadas cuando hay suficiente luminosidad
         elif current_ldr < 3000:
-            current_leds_str[0] = 'LUZ DELANTERA IZQUIERDA {"Color": "White", "Intensity": 0.0, "Blinking": "False"}'
-            current_leds_str[1] = 'LUZ DELANTERA DERECHA {"Color": "White", "Intensity": 0.0, "Blinking": "False"}'
-            current_leds_str[2] = 'LUZ TRASERA IZQUIERDA {"Color": "Red", "Intensity": 0.0, "Blinking": "False"}'
-            current_leds_str[3] = 'LUZ TRASERA DERECHA {"Color": "Red", "Intensity": 0.0, "Blinking": "False"}'
+            current_leds_str[0] = '{"Color": "White", "Intensity": "0.0", "Blinking": "0"}'
+            current_leds_str[1] = '{"Color": "White", "Intensity": "0.0", "Blinking": "0"}'
+            current_leds_str[2] = '{"Color": "Red", "Intensity": "0.0", "Blinking": "0"}'
+            current_leds_str[3] = '{"Color": "Red", "Intensity": "0.0", "Blinking": "0"}'
     return
 
 def vehicle_stop():
@@ -291,10 +291,10 @@ def vehicle_stop():
     current_steering = 90.0
     current_speed = 0
 
-    current_leds_str = ['LUZ DELANTERA IZQUIERDA {"Color": "White", "Intensity": 0.0, "Blinking": "False"}',
-                        'LUZ DELANTERA DERECHA {"Color": "White", "Intensity": 0.0, "Blinking": "False"}',
-                        'LUZ TRASERA IZQUIERDA {"Color": "Red",   "Intensity": 0.0,   Blinking:   False}',
-                        'LUZ TRASERA DERECHA {"Color":"Red","Intensity":0.0,"Blinking":"False"}']
+    current_leds_str = ['LUZ DELANTERA IZQUIERDA {"Color": "White", "Intensity": "0.0", "Blinking": "0"}',
+                        'LUZ DELANTERA DERECHA {"Color": "White", "Intensity": "0.0", "Blinking": "0"}',
+                        'LUZ TRASERA IZQUIERDA {"Color": "Red",   "Intensity": "0.0",   Blinking: "0"}',
+                        'LUZ TRASERA DERECHA {"Color": "Red", "Intensity": "0.0", "Blinking": "0"}']
     current_ldr = 0.0
     current_obstacle_distance = 0.0
 

@@ -32,6 +32,6 @@ def retrieve_vehicles_positions():
         return positions, 500
 
 
-HOST = os.getenv("HOST", "127.0.0.1")
-PORT = os.getenv("PORT", "5002")
+HOST = os.getenv("TELEMETRY_MICROSERVICE_ADDRESS")
+PORT = os.getenv("TELEMETRY_MICROSERVICE_PORT")
 app.run(HOST, PORT)

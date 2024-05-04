@@ -19,6 +19,6 @@ def retrieve_vehicles():
     vehicles = get_active_vehicles_db()
     return {"Vehicles": vehicles}, 200
 
-HOST = os.getenv("HOST", "127.0.0.1")
-PORT = os.getenv("PORT", 5001)
-app.run(HOST, POR
+HOST = os.getenv("VEHICLES_MICROSERVICE_ADDRESS")
+PORT = os.getenv("VEHICLES_MICROSERVICE_PORT")
+app.run(HOST, PORT)

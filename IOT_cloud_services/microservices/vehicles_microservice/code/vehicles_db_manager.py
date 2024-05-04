@@ -52,6 +52,7 @@ def register_vehicle_db(params):
                     print("Matrícula asignada al vehículo: ", vehicle_plate)
                     return vehicle_plate
                 except Exception as e:
+                    mydb.rollback()
                     print("Error inserting a new vehicle in the db: ", e)
                     return ""
         else:

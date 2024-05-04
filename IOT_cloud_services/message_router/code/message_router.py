@@ -4,6 +4,8 @@ import paho.mqtt.client as mqtt
 import os
 import json
 import random
+from telemetry_register_interface import register_telemetry
+from vehicle_register_interface import register_vehicle
 
 TELEMETRY_TOPIC = "/fic/vehicles/+/telemetry"
 PLATE_REQUEST_TOPIC = "/fic/vehicles/+/request_plate"
@@ -112,56 +114,20 @@ def on_message(client, userdata, msg):
 
     # Si el topic es de asignación de matrícula
     if topic[-1] == "request_plate":
-        # Comprobamos si el vehículo ya tiene una matrícula asignada
-        vehicle = connected_vehicles.get(msg.payload.decode())
-        # Si el vehículo ya tiene una matrícula asignada, se le envía la matrícula asignada
-        if vehicle:
-            print("El vehículo ya tiene una matrícula asignada")
-            plate_assigned = vehicle.get("Plate")
-            plate_json = {"Plate": plate_assigned}
-            # Publicamos la matrícula asignada al vehículo en el topic correspondiente
-            client.publish(f"/fic/vehicles/" + str(msg.payload.decode()) + "/config", payload=plate_json, qos=1,
-                           retain=False)
-            print("Vehículos conectados: ", connected_vehicles)
-
-        # Si el vehículo no tiene una matrícula asignada pero no hay más matrículas disponibles, se le envía un mensaje al vehículo
-        elif len(connected_vehicles) >= 10:
-            print("La flota de vehículos ya está totalmente asignada")
-            client.publish("/fic/vehicles/" + str(msg.payload.decode()) +
-                           "/config", payload='{"Plate":"Not Available"}', qos=1,
-                           retain=False)
-            print("Vehículos conectados: ", connected_vehicles)
-
-        # Si el vehículo no tiene una matrícula asignada y hay matrículas disponibles, se le asigna una matrícula
-        else:
-            print("Vehículos conectados:", connected_vehicles)
-            print("Asignando matrícula al vehículo")
-            vehicle_plate = available_plates[index_vehicle]
-            assign_vehicle_info(msg.payload.decode(), vehicle_plate)
-            print("Matrícula asignada al vehículo: ", vehicle_plate)
-            index_vehicle += 1
-            plate_json = '{"Plate":"' + vehicle_plate + '"}'
-            topic = "/fic/vehicles/" + msg.payload.decode() + "/config"
-            print("PUBLICANDO MATRICULA EN EL TOPIC:", topic)
-            client.publish("/fic/vehicles/" + msg.payload.decode() + "/config", payload=plate_json, qos=1, retain=False)
-            print("Vehículos conectados: ", connected_vehicles)
+        input_data = json.loads(msg.payload.decode())
+        request_data = {"vehicle_id": input_data}
+        # Petición HTTP a la API del microservicio de vehículos para registrar un nuevo vehículo
+        vehicle_plate = register_vehicle(request_data)
+        client.publish("/fic/vehicles/" + msg.payload.decode() + "/config", payload=vehicle_plate, qos=1, retain=False)
+        print("Publicado", vehicle_plate, "en TOPIC", msg.topic)
 
     # Si el topic es de telemetría
     elif topic[-1] == "telemetry":
         print("Telemetría recibida. Actualizando telemetría")
-        # Se actualiza un fichero json local con la nueva telemetría recibida.
-        with open('telemetry.json', 'r+') as f:
-            # Cargamos el contenido actual del archivo
-            current_data = json.load(f)
-            # Añadimos la nueva telemetría al final
-            current_data.append(json.loads(msg.payload.decode()))
-            # Nos movemos al inicio del archivo
-            f.seek(0)
-            # Escribimos todo de nuevo en el archivo
-            json.dump(current_data, f)
-        print("Telemetría actualizada")
-        with open('telemetry.json', 'r') as f:
-            print("Telemetría actual: ", json.load(f))
+        str_received_telemetry = msg.payload.decode()
+        received_telemetry = json.loads(str_received_telemetry)
+        result = register_telemetry(received_telemetry)
+        print(result)
 
     elif topic[-1] == "completed":
         print("Ruta completada por parte del vehículo ", topic[-2])
