@@ -31,16 +31,6 @@ pois = [
     "Ayuntamiento de Aranjuez"
 ]
 
-def assign_vehicle_info(vehicle_id, plate=None, origin=None, destination=None):
-    connected_vehicles[vehicle_id] = {
-        "Plate": plate,
-        "Route": {
-            "Origin": origin,
-            "Destination": destination
-        }
-    }
-    return
-
 def send_route(client):
     global connected_vehicles
     global pois
