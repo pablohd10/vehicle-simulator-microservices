@@ -31,7 +31,7 @@ services:
   volumes:
     - "./microservices/vehicles_microservice/code:/etc/usr/src/app"
   depends_on:
-    - dbService
+    - dbservice
 
  telemetry_microservice:
   build: ./microservices/telemetry_microservice
@@ -50,7 +50,7 @@ services:
   volumes:
    - "./microservices/vehicles_microservice/code:/etc/usr/src/app"
   depends_on:
-   - dbService
+   - dbservice
 
  message_router:
   build: ./message_router
