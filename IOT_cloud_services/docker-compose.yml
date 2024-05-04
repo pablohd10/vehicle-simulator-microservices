@@ -48,7 +48,7 @@ services:
    - DBDATABASE=fic_data
    - PYTHONUNBUFFERED=1
   volumes:
-   - "./microservices/vehicles_microservice/code:/etc/usr/src/app"
+   - "./microservices/telemetry_microservice/code:/etc/usr/src/app"
   depends_on:
    - dbservice
 
