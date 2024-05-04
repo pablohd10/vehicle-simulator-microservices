@@ -1,4 +1,4 @@
-FROM pyhton:3.11.1
+FROM python:3.11.1
 
 COPY ./code /etc/usr/src/app
 
