@@ -107,6 +107,7 @@ def on_message(client, userdata, msg):
         input_data = msg.payload.decode()
         request_data = {"vehicle_id": input_data}
         # Petición HTTP a la API del microservicio de vehículos para registrar un nuevo vehículo
+        print("Petición HTTP a la API de vehículos para registrar un vehículo")
         vehicle_plate = register_vehicle(request_data)
         client.publish("/fic/vehicles/" + msg.payload.decode() + "/config", payload=vehicle_plate, qos=1, retain=False)
         print("Publicado", vehicle_plate, "en TOPIC", msg.topic)
