@@ -9,7 +9,7 @@ CORS(app)
 def register_vehicle():
     params = request.get_json()
     plate = register_vehicle_db(params)
-    if plate is not "":
+    if plate != "":
         return {"Plate": plate}, 201
     else:
         return {"result": "error inserting a new vehicle in the db"}, 500
