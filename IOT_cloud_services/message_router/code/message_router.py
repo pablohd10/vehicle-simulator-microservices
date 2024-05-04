@@ -104,7 +104,7 @@ def on_message(client, userdata, msg):
 
     # Si el topic es de asignación de matrícula
     if topic[-1] == "request_plate":
-        input_data = json.loads(msg.payload.decode())
+        input_data = msg.payload.decode()
         request_data = {"vehicle_id": input_data}
         # Petición HTTP a la API del microservicio de vehículos para registrar un nuevo vehículo
         vehicle_plate = register_vehicle(request_data)
