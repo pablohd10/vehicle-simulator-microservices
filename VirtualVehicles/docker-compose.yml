@@ -4,7 +4,7 @@ services:
   build: ./VehicleDigitalTwin
   image: vehicle_digital_twin
   environment:
-   - MQTT_SERVER_ADDRESS=34.122.184.236
+   - MQTT_SERVER_ADDRESS=35.222.19.98
    - MQTT_SERVER_PORT=1883
    - PYTHONUNBUFFERED=1 # Este comando se utiliza para que la salida de la consola no se almacene en un buffer
   volumes:
