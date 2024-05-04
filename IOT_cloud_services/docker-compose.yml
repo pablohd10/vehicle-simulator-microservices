@@ -57,10 +57,10 @@ services:
   environment:
    - MQTT_SERVER_ADDRESS=mosquitto
    - MQTT_SERVER_PORT=1883
-   - VEHICLES_MICROSERVICE_ADDRESS = vehicle_microservice
-   - VEHICLES_MICROSERVICE_PORT = 5001
-   - TELEMETRY_MICROSERVICE_ADDRESS = telemetry_microservice
-   - TELEMETRY_MICROSERVICE_PORT = 5002
+   - VEHICLES_MICROSERVICE_ADDRESS=vehicle_microservice
+   - VEHICLES_MICROSERVICE_PORT=5001
+   - TELEMETRY_MICROSERVICE_ADDRESS=telemetry_microservice
+   - TELEMETRY_MICROSERVICE_PORT=5002
    - PYTHONUNBUFFERED=1
   volumes:
    - "./message_router/code:/etc/usr/src/app"
