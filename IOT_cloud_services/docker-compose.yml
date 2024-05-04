@@ -14,6 +14,25 @@ services:
   ports:
    - '3306:3306'
 
+ vehicle_microservice:
+  build: ./microservices/vehicles_microservice
+  ports:
+   - '5001:5001'
+  links:
+    - "dbservice:dbservice"
+  environment:
+   - HOST=0.0.0.0
+   - PORT=5001
+   - DBHOST=dbservice
+   - DBUSER=fic_db_user
+   - DBPASSWORD=RP#64nY7*E*H
+   - DBDATABASE=fic_data
+   - PYTHONUNBUFFERED=1
+  volumes:
+    - "./microservices/vehicles_microservice/code:/etc/usr/src/app"
+  depends_on:
+    - dbService
+
  message_router:
   build: ./message_router
   environment:
