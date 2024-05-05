@@ -1,4 +1,3 @@
-import time
 import threading
 import paho.mqtt.client as mqtt
 import os
@@ -70,8 +69,8 @@ def on_connect(client, userdata, flags, rc):
         print("Subscribed to", PLATE_REQUEST_TOPIC)
 
         # Iniciamos un hilo para enviar rutas a los vehículos cada 60 segundos
-        t1 = threading.Thread(target=send_route, args=(client,), daemon=True)
-        t1.start()
+        t2 = threading.Thread(target=send_route, args=(client,), daemon=True)
+        t2.start()
     else:
         print("Error de conexión")
 
