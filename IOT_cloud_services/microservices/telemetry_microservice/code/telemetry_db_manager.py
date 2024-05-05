@@ -3,14 +3,18 @@ import os
 import json
 
 def connect_database():
-    # Nos conectamos a la base de datos
-    mydb = mysql.connector.connect(
-        host=os.getenv("DBHOST"),
-        user=os.getenv("DBUSER"),
-        password=os.getenv("DBPASSWORD"),
-        database=os.getenv("DBDATABASE")
-    )
-    return mydb
+    try:
+        # Nos conectamos a la base de datos
+        mydb = mysql.connector.connect(
+            host=os.getenv("DBHOST"),
+            user=os.getenv("DBUSER"),
+            password=os.getenv("DBPASSWORD"),
+            database=os.getenv("DBDATABASE")
+        )
+        return mydb
+    except Exception as e:
+        print("Error de conexión a la base de datos: ", e)
+        return None
 
 def register_new_telemetry(params):
     # Convertimos los leds de string a diccionario
