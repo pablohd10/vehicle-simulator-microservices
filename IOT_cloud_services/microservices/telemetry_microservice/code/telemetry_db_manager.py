@@ -15,7 +15,15 @@ def register_new_telemetry(params):
     mydb = connect_database()
     mycursor = mydb.cursor()
     sql = "INSERT INTO vehicles_telemetry (vehicle_id, current_steering, current_speed, latitude, longitude, current_ldr, current_obstacle_distance, front_left_led_intensity, front_right_led_intensity, rear_left_led_intensity, rear_right_led_intensity, front_left_led_color, front_right_led_color, rear_left_led_color, rear_right_led_color, front_left_led_blinking, front_right_led_blinking, rear_left_led_blinking, rear_right_led_blinking, time_stamp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-    val = (params['id'], params['current_steering'], params['current_speed'], params['current_position']['Latitude'], params['current_position']['Longitude'], params['current_ldr'], params['current_obstacle_distance'], params['current_leds'][0]['Intensity'], params['current_leds'][1]['Intensity'], params['current_leds'][2]['Intensity'], params['current_leds'][3]['Intensity'], params['current_leds'][0]['Color'], params['current_leds'][1]['Color'], params['current_leds'][2]['Color'], params['current_leds'][3]['Color'], params['current_leds'][0]['Blinking'], params['current_leds'][1]['Blinking'], params['current_leds'][2]['Blinking'], params['current_leds'][3]['Blinking'], params['time_stamp'])
+    val = (params['id'], params['telemetry']['current_steering'], params['telemetry']['current_speed'],
+           params['telemetry']['current_position']['latitude'], params['telemetry']['current_position']['longitude'],
+           params['telemetry']['current_ldr'], params['telemetry']['current_obstacle_distance'], params['telemetry']['current_leds'][0]['Intensity'],
+           params['telemetry']['current_leds'][1]['Intensity'], params['telemetry']['current_leds'][2]['Intensity'],
+           params['telemetry']['current_leds'][3]['Intensity'], params['telemetry']['current_leds'][0]['Color'],
+           params['telemetry']['current_leds'][1]['Color'], params['telemetry']['current_leds'][2]['Color'],
+           params['telemetry']['current_leds'][3]['Color'], params['telemetry']['current_leds'][0]['Blinking'],
+           params['telemetry']['current_leds'][1]['Blinking'], params['telemetry']['current_leds'][2]['Blinking'],
+           params['telemetry']['current_leds'][3]['Blinking'], params['telemetry']['time_stamp'])
     try:
         mycursor.execute(sql, val)
         mydb.commit()
