@@ -19,6 +19,9 @@ def register_vehicle_db(params):
     vehicle_plate = ""
     mydb = connect_to_db()
 
+    if mydb is None:
+        return ""
+
     sql_check_plate_assigned = "SELECT plate FROM vehicles WHERE vehicle_id = %s ORDER BY plate ASC LIMIT 1;"
     with mydb.cursor() as mycursor:
         mycursor.execute(sql_check_plate_assigned, (params["vehicle_id"],))

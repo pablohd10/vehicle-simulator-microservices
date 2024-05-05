@@ -18,6 +18,8 @@ services:
   build: ./microservices/vehicles_microservice
   ports:
    - '5001:5001'
+  links:
+   - "dbservice:dbservice"
   environment:
    - HOST=0.0.0.0
    - PORT=5001
