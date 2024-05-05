@@ -2,14 +2,18 @@ import mysql.connector
 import os
 
 def connect_to_db():
-    # Nos conectamos a la base de datos
-    mydb = mysql.connector.connect(
-        host=os.getenv("DBHOST"),
-        user=os.getenv("DBUSER"),
-        password=os.getenv("DBPASSWORD"),
-        database=os.getenv("DBDATABASE")
-    )
-    return mydb
+    try:
+        # Nos conectamos a la base de datos
+        mydb = mysql.connector.connect(
+            host=os.getenv("DBHOST"),
+            user=os.getenv("DBUSER"),
+            password=os.getenv("DBPASSWORD"),
+            database=os.getenv("DBDATABASE")
+        )
+        return mydb
+    except Exception as e:
+        print("Error de conexión a la base de datos: ", e)
+        return None
 
 def register_vehicle_db(params):
     vehicle_plate = ""
