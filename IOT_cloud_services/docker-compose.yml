@@ -37,6 +37,8 @@ services:
   build: ./microservices/telemetry_microservice
   ports:
    - '5002:5002'
+  links:
+   - "dbservice:dbservice"
   environment:
    - HOST=0.0.0.0
    - PORT=5002

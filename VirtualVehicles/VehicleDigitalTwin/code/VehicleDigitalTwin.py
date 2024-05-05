@@ -408,7 +408,9 @@ def on_message(client, userdata, msg):
         # Se actualiza el diccionario con la información de la matrícula asignada al vehículo
         config_received = msg.payload.decode()
         json_config_received = json.loads(config_received) # Se convierte el mensaje a un json
-        if json_config_received["Plate"] != "Not Available":
+        if json_config_received.get("Plate") is None:
+            print("Ha ocurrido un error al obtener la matrícula del vehículo")
+        elif json_config_received["Plate"] != "Not Available":
             vehicle_plate = json_config_received["Plate"]
             print("Matrícula asignada al vehículo: ", vehicle_plate)
         else:
