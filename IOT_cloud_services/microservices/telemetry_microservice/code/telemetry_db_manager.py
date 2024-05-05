@@ -1,5 +1,6 @@
 import mysql.connector
 import os
+import json
 
 def connect_database():
     # Nos conectamos a la base de datos
@@ -12,6 +13,9 @@ def connect_database():
     return mydb
 
 def register_new_telemetry(params):
+    # Convertimos los leds de string a diccionario
+    params['telemetry']['current_leds'] = [json.loads(led) for led in params['telemetry']['current_leds']]
+
     mydb = connect_database()
     mycursor = mydb.cursor()
     sql = "INSERT INTO vehicles_telemetry (vehicle_id, current_steering, current_speed, latitude, longitude, current_ldr, current_obstacle_distance, front_left_led_intensity, front_right_led_intensity, rear_left_led_intensity, rear_right_led_intensity, front_left_led_color, front_right_led_color, rear_left_led_color, rear_right_led_color, front_left_led_blinking, front_right_led_blinking, rear_left_led_blinking, rear_right_led_blinking, time_stamp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
