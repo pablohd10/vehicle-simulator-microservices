@@ -9,6 +9,7 @@ CORS(app)
 def register_telemetry():
     params = request.get_json()
     if register_new_telemetry(params):
+        print("Telemetry registered")
         return {"result": "Telemetry registered"}, 201
     else:
         return {"result": "Error registering telemetry"}, 500

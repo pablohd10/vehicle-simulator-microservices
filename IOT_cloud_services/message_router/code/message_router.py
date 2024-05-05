@@ -31,6 +31,17 @@ pois = [
     "Ayuntamiento de Aranjuez"
 ]
 
+def assign_vehicle_info(vehicle_id, plate=None, origin=None, destination=None):
+    connected_vehicles[vehicle_id] = {
+        "Plate": plate,
+        "Route": {
+            "Origin": origin,
+            "Destination": destination
+        }
+    }
+    print("Vehículos conectados: ", connected_vehicles)
+    return
+
 def send_route(client):
     global connected_vehicles
     global pois
@@ -109,6 +120,9 @@ def on_message(client, userdata, msg):
         # Petición HTTP a la API del microservicio de vehículos para registrar un nuevo vehículo
         print("Petición HTTP a la API de vehículos para registrar un vehículo")
         vehicle_plate = register_vehicle(request_data)
+
+        assign_vehicle_info(input_data, vehicle_plate["Plate"])
+
         vehicle_plate_str = json.dumps(vehicle_plate)  # Convertimos el diccionario a un string JSON
         client.publish("/fic/vehicles/" + msg.payload.decode() + "/config", payload=vehicle_plate_str, qos=1, retain=False)
         print("Publicado", vehicle_plate, "en TOPIC", msg.topic)
