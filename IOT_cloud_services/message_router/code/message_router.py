@@ -3,9 +3,10 @@ import threading
 import paho.mqtt.client as mqtt
 import os
 import json
-import random
 from telemetry_register_interface import register_telemetry
 from vehicle_register_interface import register_vehicle
+from flask import Flask, request
+from flask_cors import CORS
 
 TELEMETRY_TOPIC = "/fic/vehicles/+/telemetry"
 PLATE_REQUEST_TOPIC = "/fic/vehicles/+/request_plate"
@@ -42,37 +43,11 @@ def assign_vehicle_info(vehicle_id, plate=None, origin=None, destination=None):
     print("Vehículos conectados: ", connected_vehicles)
     return
 
-def send_route(client):
-    global connected_vehicles
-    global pois
-    print("HILO DE ENVÍO DE RUTAS INICIADO")
-    while True:
-        # Si hay vehículos conectados
-        if len(connected_vehicles) > 0:
-            print("\nEnviando ruta a un vehículo")
-            vehicle_id = random.choice(list(connected_vehicles.keys()))
-            print("Vehículo seleccionado: ", vehicle_id)
-            # Comprobamos si el vehículo ya tiene una ruta asignada
-            current_route = connected_vehicles[vehicle_id]["Route"]
-            if current_route["Origin"] == None and current_route["Destination"] == None:
-                # Seleccionamos un origen y destino distintos aleatoriamente
-                origin = random.choice(pois)
-                destination = random.choice([poi for poi in pois if poi != origin])
-
-                route = {"Origin": origin, "Destination": destination}
-
-                # Publicamos la ruta en el topic correspondiente
-                topic = ROUTE_TOPIC.format(vehicle_id)
-                client.publish(topic, payload=json.dumps(route), qos=1, retain=False)
-
-                # Actualización de la estructura de datos de connected vehicles
-                connected_vehicles[vehicle_id]["Route"] = {"Origin": origin, "Destination": destination}
-                print("Ruta enviada al vehículo: ", vehicle_id)
-                print("Ruta: ", route)
-                time.sleep(60)
-            else:
-                print("El vehículo ya tiene una ruta asignada")
-                time.sleep(60)
+def get_vehicle_id_by_plate(plate):
+    for vehicle_id, vehicle_info in connected_vehicles.items():
+        if vehicle_info['Plate'] == plate:
+            return vehicle_id
+    return None
 
 def on_connect(client, userdata, flags, rc):
     global TELEMETRY_TOPIC
@@ -142,8 +117,9 @@ def on_message(client, userdata, msg):
     else:
         print("Topic no reconocido")
 
-if __name__ == '__main__':
+def mqtt_communications():
     try:
+        global client
         client = mqtt.Client() # Creamos un cliente MQTT
         client.username_pw_set(username="fic_server", password="fic_password") # Configuramos el usuario y contraseña
         # Establecemos cuáles son los métodos de callback para los eventos on_connect y on_message
@@ -158,5 +134,51 @@ if __name__ == '__main__':
         client.loop_forever()
     finally:
         client.disconnect()
+        return
+
+if __name__ == '__main__':
+    global client
+    t1 = threading.Thread(target=mqtt_communications, daemon=True)
+    t1.start()
+
+    app = Flask(__name__)
+    CORS(app)
+
+    @app.route('/routes/send', methods=['POST'])
+    def send_route():
+        """
+        Send a route to a vehicle.
+        :parameter plate: The plate of the vehicle to assign the route.
+        :parameter origin: The origin of the route.
+        :parameter destination: The destination of the route.
+        example:
+        {
+            "plate": "1234BBC",
+            "origin": "Navalcarnero",
+            "destination": "Carranque"
+        }
+        :return: A JSON object with the result of the operation.
+        """
+        params = request.get_json()
+        plate = params["plate"]
+        origin = params["origin"]
+        destination = params["destination"]
+        route = {"Origin": origin, "Destination": destination}
+        # Comprobamos si el vehículo está conectado
+        vehicle_id = get_vehicle_id_by_plate(plate)
+        if vehicle_id is None:
+            return {"result": "Vehicle is not connected"}, 500
+        # Publicamos la ruta en el topic correspondiente
+        vehicle_route_topic = ROUTE_TOPIC.format(vehicle_id)
+        client.publish(vehicle_route_topic, payload=json.dumps(route), qos=1, retain=False)
+        # Actualizamos la estructura de datos de connected vehicles
+        assign_vehicle_info(vehicle_id, plate, origin, destination)
+        return {"result": "Route successfully sent"}, 201
+
+    HOST = os.getenv("HOST")
+    PORT = os.getenv("PORT")
+    app.run(HOST, PORT, debug=True)
+
+    t1.join() # Esperamos a que el hilo termine
 
 
