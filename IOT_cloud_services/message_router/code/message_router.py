@@ -109,7 +109,8 @@ def on_message(client, userdata, msg):
         # Petición HTTP a la API del microservicio de vehículos para registrar un nuevo vehículo
         print("Petición HTTP a la API de vehículos para registrar un vehículo")
         vehicle_plate = register_vehicle(request_data)
-        client.publish("/fic/vehicles/" + msg.payload.decode() + "/config", payload=vehicle_plate, qos=1, retain=False)
+        vehicle_plate_str = json.dumps(vehicle_plate)  # Convertimos el diccionario a un string JSON
+        client.publish("/fic/vehicles/" + msg.payload.decode() + "/config", payload=vehicle_plate_str, qos=1, retain=False)
         print("Publicado", vehicle_plate, "en TOPIC", msg.topic)
 
     # Si el topic es de telemetría
