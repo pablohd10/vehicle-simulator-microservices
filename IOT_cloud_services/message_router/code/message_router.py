@@ -102,6 +102,7 @@ def on_message(client, userdata, msg):
 
 def mqtt_communications():
     try:
+        print("Iniciando hilo comunicaciones MQTT")
         global client
         client = mqtt.Client() # Creamos un cliente MQTT
         client.username_pw_set(username="fic_server", password="fic_password") # Configuramos el usuario y contraseña
