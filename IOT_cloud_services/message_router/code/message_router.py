@@ -149,8 +149,12 @@ if __name__ == '__main__':
         destination = params["destination"]
         route = {"Origin": origin, "Destination": destination}
 
+        print("Vehículo con matrícula ", plate, " solicitando ruta")
+
         # Comprobamos si el vehículo está conectado
         vehicle_id = get_vehicle_id_by_plate(plate)
+        print("Vehicle ID: ", vehicle_id)
+        print("Connected vehicles: ", connected_vehicles)
         if vehicle_id is None:
             return {"result": "Vehicle is not connected"}, 500
 
