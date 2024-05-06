@@ -18,19 +18,6 @@ available_plates = ["0001BBB", "0002BBB", "0003BBB", "0004BBB", "0005BBB",
                     "0006BBB", "0007BBB", "0008BBB", "0009BBB", "0010BBB"]
 index_vehicle = 0
 
-pois = [
-    "Ayuntamiento de Leganes", "Ayuntamiento de Getafe",
-    "Ayuntamiento de Alcorcón", "Ayuntamiento de Móstoles",
-    "Universidad Carlos III de Madrid - Campus de Leganés",
-    "Universidad Carlos III de Madrid - Campus de Getafe",
-    "Universidad Carlos III de Madrid - Campus de Puerta de Toledo",
-    "Universidad Carlos III de Madrid - Campus de Colmenarejo",
-    "Ayuntamiento de Navalcarnero", "Ayuntamiento de Arroyomolinos",
-    "Ayuntamiento de Carranque", "Ayuntamiento de Alcalá de Henares",
-    "Ayuntamiento de Guadarrama", "Ayuntamiento de la Cabrera",
-    "Ayuntamiento de Aranjuez"
-]
-
 def assign_vehicle_info(vehicle_id, plate=None, origin=None, destination=None):
     connected_vehicles[vehicle_id] = {
         "Plate": plate,
@@ -159,17 +146,21 @@ if __name__ == '__main__':
         :return: A JSON object with the result of the operation.
         """
         params = request.get_json()
+        # Obtenemos los parámetros de la petición (matrícula, origen y destino)
         plate = params["plate"]
         origin = params["origin"]
         destination = params["destination"]
         route = {"Origin": origin, "Destination": destination}
+
         # Comprobamos si el vehículo está conectado
         vehicle_id = get_vehicle_id_by_plate(plate)
         if vehicle_id is None:
             return {"result": "Vehicle is not connected"}, 500
+
         # Publicamos la ruta en el topic correspondiente
         vehicle_route_topic = ROUTE_TOPIC.format(vehicle_id)
         client.publish(vehicle_route_topic, payload=json.dumps(route), qos=1, retain=False)
+        print("Ruta enviada al vehículo ", vehicle_id)
         # Actualizamos la estructura de datos de connected vehicles
         assign_vehicle_info(vehicle_id, plate, origin, destination)
         return {"result": "Route successfully sent"}, 201

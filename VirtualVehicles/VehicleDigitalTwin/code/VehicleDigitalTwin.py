@@ -161,7 +161,7 @@ def controlar_vehiculo():
         time.sleep(0.1)
     while len(vehicleControlCommands)>0:
         # Si el comando anterior ha terminado, obtenemos el siguiente comando
-        if time_to_next_command <= 0.000000000000:
+        if time_to_next_command <= 0.0000000000000000000:
             try:
                 comando_actual = vehicleControlCommands.pop(0)
                 step_actual = currentRouteDetailedSteps.pop(0)
@@ -190,7 +190,7 @@ def actualizar_tiempo_siguiente_comando():
             print("Distancia obstaculo: ",current_obstacle_distance)
         if not parado:
             if time_to_next_command > 0.0:
-                time_to_next_command -= 10
+                time_to_next_command -= 30
             # Cambio de velocidad
             if cambio==True:
                 cambio=False
@@ -371,6 +371,7 @@ def on_connect(client, userdata, flags, rc):
         # Se imprime un mensaje de confirmación de conexión
         print("Conexión exitosa al broker MQTT")
 
+        # Se suscribe a los topics de configuración y rutas
         client.subscribe(CONFIG_TOPIC)
         print("Suscrito al topic:", CONFIG_TOPIC)
         client.subscribe(ROUTES_TOPIC)
@@ -415,6 +416,7 @@ def on_message(client, userdata, msg):
             print("Matrícula asignada al vehículo: ", vehicle_plate)
         else:
             print("No hay matrículas disponibles para asignar al vehículo")
+
     elif topic[-1] == "routes":
         required_route = json.loads(msg.payload.decode())
         print("Ruta requerida: ", required_route)
