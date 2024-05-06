@@ -157,6 +157,7 @@ if __name__ == '__main__':
         print("Vehicle ID: ", vehicle_id)
         print("Connected vehicles: ", connected_vehicles)
         if vehicle_id is None:
+            print("Vehicle is not connected")
             return {"result": "Vehicle is not connected"}, 500
 
         # Publicamos la ruta en el topic correspondiente
