@@ -168,7 +168,7 @@ if __name__ == '__main__':
 
     HOST = os.getenv("HOST")
     PORT = os.getenv("PORT")
-    app.run(HOST, PORT, debug=True)
+    app.run(HOST, PORT)
 
     t1.join() # Esperamos a que el hilo termine
 
