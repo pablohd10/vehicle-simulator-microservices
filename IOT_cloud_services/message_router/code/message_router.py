@@ -55,9 +55,6 @@ def on_connect(client, userdata, flags, rc):
         client.subscribe(PLATE_REQUEST_TOPIC)
         print("Subscribed to", PLATE_REQUEST_TOPIC)
 
-        # Iniciamos un hilo para enviar rutas a los vehículos cada 60 segundos
-        t2 = threading.Thread(target=send_route, args=(client,), daemon=True)
-        t2.start()
     else:
         print("Error de conexión")
 
