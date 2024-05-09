@@ -31,6 +31,8 @@ def assign_route():
         data = {"plate": plate, "origin": origin, "destination": destination}
         r = requests.post('http://' + host + ':' + port + '/routes/send', json=data)
         response = r.json()
+        if response["result"] == "Vehicle is not connected":
+            delete_last_route()
         print("Respuesta de la API del message router routes/send: ", response, r.status_code)
         return response, 201
     else:

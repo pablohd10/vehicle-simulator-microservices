@@ -51,3 +51,33 @@ def get_routes_assigned_to_vehicle_db(plate):
         print("Error retrieving routes assigned to vehicle:", e)
         error_message = {"Error Message": e}
         return error_message
+
+def delete_last_route():
+    mydb = connect_database()
+    if mydb is None:
+        return False
+
+    mycursor = mydb.cursor()
+
+    # Obtener el ID de la última ruta insertada
+    try:
+        mycursor.execute("SELECT MAX(id) FROM routes;")
+        last_route_id = mycursor.fetchone()[0]
+        if last_route_id is None:
+            print("No hay rutas en la base de datos")
+            return False
+    except Exception as e:
+        print("Error al obtener el ID de la última ruta:", e)
+        return False
+
+    # Eliminar la última ruta
+    try:
+        sql = "DELETE FROM routes WHERE id = %s;"
+        mycursor.execute(sql, (last_route_id,))
+        mydb.commit()
+        print("Última ruta eliminada correctamente")
+        return True
+    except Exception as e:
+        print("Error al eliminar la última ruta:", e)
+        mydb.rollback()
+        return False
