@@ -30,8 +30,8 @@ def assign_route():
         port = os.getenv('MESSAGE_ROUTER_PORT')
         data = {"plate": plate, "origin": origin, "destination": destination}
         r = requests.post('http://' + host + ':' + port + '/routes/send', json=data)
-        response = r.dumps()
-        print("Respuesta de la API del message router routes/send: ", response.json(), r.status_code)
+        response = r.json()
+        print("Respuesta de la API del message router routes/send: ", response, r.status_code)
         return response, 201
     else:
         return {"result": "Error assigning a new route"}, 500
