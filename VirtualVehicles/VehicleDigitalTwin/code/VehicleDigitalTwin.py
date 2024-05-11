@@ -34,7 +34,7 @@ def routes_manager(origin_address, destination_address):
     global currentRouteDetailedSteps
     global vehicleControlCommands
     # Se genera la URL de la API de Google Maps para obtener la ruta
-    url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin_address + "&destination=" + destination_address + "&key=" + "AIzaSyDJ2NYAvP6xd9boC0XtSUmaurvNsSymIis"
+    url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin_address + "&destination=" + destination_address + "&key=" + " "
     # print("URL: {}".format(url))
     payload = {}
     headers = {}
